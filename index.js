@@ -22,6 +22,24 @@ let npreguntas = [];
 let preguntas_hechas = 0;
 let preguntas_correctas = 0;
 
+let segundosRestantes = 5;
+
+
+function actualizar() {
+  document.getElementById('countdown').innerHTML = segundosRestantes;
+
+  if (segundosRestantes == 0) {
+    escogerPreguntaAleatoria();
+
+  } else {
+    segundosRestantes -= 1;
+    setTimeout(actualizar, 1000);
+  }
+
+}
+
+actualizar();
+
 function escogerPreguntaAleatoria() {
   let n;
   if (preguntas_aleatorias) {
@@ -29,32 +47,29 @@ function escogerPreguntaAleatoria() {
   } else {
     n = 0;
   }
-
-  while (npreguntas.includes(n)) {
-    n++;
-    if (n >= interprete_bp.length) {
-      n = 0;
-    }
-    if (npreguntas.length == interprete_bp.length) {
-      //Aquí es donde el juego se reinicia
-      if (mostrar_pantalla_juego_términado) {
-        swal.fire({
-          title: "Juego finalizado",
-          text:
-            "Puntuación: " + preguntas_correctas + "/" + (preguntas_hechas - 1),
-          icon: "success"
-        });
-      }
-      if (reiniciar_puntos_al_reiniciar_el_juego) {
-        preguntas_correctas = 0
-        preguntas_hechas = 0
-      }
-      npreguntas = [];
-    }
+  if (n >= interprete_bp.length) {
+    n = 0;
   }
+  if (npreguntas.length == 10) {
+    //Aquí es donde el juego se reinicia
+    if (mostrar_pantalla_juego_términado) {
+      swal.fire({
+        title: "Juego finalizado",
+        text:
+          "Puntuación: " + preguntas_correctas + "/" + (preguntas_hechas),
+        icon: "success"
+      });
+    }
+    if (reiniciar_puntos_al_reiniciar_el_juego) {
+      preguntas_correctas = 0
+      preguntas_hechas = 0
+    }
+    npreguntas = [];
+  }
+
   npreguntas.push(n);
   preguntas_hechas++;
-
+  n++;
   escogerPregunta(n);
 }
 
