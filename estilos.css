@@ -12,12 +12,21 @@
       padding: 0;
       margin: 0;
       text-align: center;
-      font-family: calibri;
+      font-family: 'Georgia', serif;
       font-size: 120%;
     }
 
     h1{
       color:black;
+    }
+
+    .title-rush {
+      font-family: 'Georgia', serif;      /* Fuente con más personalidad */
+      font-size: 2rem;                  /* Tamaño más grande */
+      color: #fff;                        /* Color gris oscuro */
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);  /* Sombra sutil */
+      text-align: center;                 /* Centrado */
+      margin: 30px 0;   
     }
     
     #particles-js {
