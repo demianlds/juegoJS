@@ -9,27 +9,30 @@
 </head>
 
 <body>
-
-  <div class="contenedor">
-    <h1>¿Quien quiere ser proletario?</h1>
-    <div class="puntaje" id="puntaje"></div>
-    <div class="encabezado">
-      <div class="categoria" id="categoria">
+  <div id="particles-js"></div>
+    <div class="contenedor">
+      <h1 style="color: white;">Quick Rush</h1>
+      <div class="puntaje" id="puntaje"></div>
+      <div class="encabezado">
+        <div class="categoria" id="categoria"></div>
+        <div class="numero" id="numero"></div>
+        <div class="pregunta" id="pregunta"></div>
+        <img src="#" class="imagen" id="imagen">
+        <span id="countdown"></span>
       </div>
-      <div class="numero" id="numero"></div>
-      <div class="pregunta" id="pregunta">
-      </div>
-      <img src="#" class="imagen" id="imagen">
-      <span id="countdown"></span>
-    </div>
-    <div class="btn" id="btn1" onclick="oprimir_btn(0)"></div>
-    <div class="btn" id="btn2" onclick="oprimir_btn(1)"></div>
-    <div class="btn" id="btn3" onclick="oprimir_btn(2)"></div>
-    <div class="btn" id="btn4" onclick="oprimir_btn(3)"></div>
-
-
-    <script src="index.js"></script>
+      <div class="btn" id="btn1" onclick="oprimir_btn(0)"></div>
+      <div class="btn" id="btn2" onclick="oprimir_btn(1)"></div>
+      <div class="btn" id="btn3" onclick="oprimir_btn(2)"></div>
+      <div class="btn" id="btn4" onclick="oprimir_btn(3)"></div>
   </div>
+
+  <script src="index.js"></script>
+  <script src="./node_modules/particles.js/particles.js"></script>
+  <script>
+    particlesJS.load('particles-js', './particles.json', function() {
+     console.log('callback - particles.js config loaded');
+    });
+  </script>
 
 </body>
 

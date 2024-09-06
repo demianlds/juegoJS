@@ -2,8 +2,13 @@
       transition: all 0.3s;
     }
 
+    html, body {
+      height: 100%;
+      margin: 0;
+    }
+
     body {
-      background:blueviolet;
+      background:linear-gradient(65deg, #000000, #0b0033, #26004d, #4b007a, #22003c);
       padding: 0;
       margin: 0;
       text-align: center;
@@ -15,6 +20,14 @@
       color:black;
     }
     
+    #particles-js {
+      position: absolute;  /* O absolute si es necesario */
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      z-index: -1;  /* Asegúrate de que esté detrás de otros elementos */
+    }
   
 
     .contenedor {
@@ -24,20 +37,21 @@
       flex-direction: column;
       justify-content: center;
       align-items: center;
+      z-index: 1;
     }
 
     .encabezado {
       position: relative;
-      background:rgb(118, 204, 193);
       min-width: 300px;
       width: 70%;
       max-width: 600px;
       padding: 10px;
       border-radius: 10px;
+      color: white;
     }
 
     .categoria {
-      color:black;
+      color:white;
       text-align: left;
     }
 

@@ -2,45 +2,56 @@ let preguntas_aleatorias = true;
 let mostrar_pantalla_juego_términado = true;
 let reiniciar_puntos_al_reiniciar_el_juego = true;
 
+let juego_terminado = false;
+
 window.onload = function () {
   base_preguntas = readText("database.json");
-  //el parse es para analizar y convertir el formato JSON
   interprete_bp = JSON.parse(base_preguntas);
-  escogerPreguntaAleatoria();
+  iniciarJuego();
 };
 
 let pregunta;
 let posibles_respuestas;
-btn_correspondiente = [
+let btn_correspondiente = [
   select_id("btn1"),
   select_id("btn2"),
   select_id("btn3"),
   select_id("btn4")
 ];
 let npreguntas = [];
-
 let preguntas_hechas = 0;
 let preguntas_correctas = 0;
 
-let segundosRestantes = 5;
+let segundos = 10;
+let intervalo;
 
-
-function actualizar() {
-  document.getElementById('countdown').innerHTML = segundosRestantes;
-
-  if (segundosRestantes == 0) {
-    escogerPreguntaAleatoria();
-
-  } else {
-    segundosRestantes -= 1;
-    setTimeout(actualizar, 1000);
-  }
-
+function iniciarJuego() {
+  juego_terminado = false;
+  preguntas_hechas = 0;
+  preguntas_correctas = 0;
+  npreguntas = [];
+  escogerPreguntaAleatoria();
 }
 
-actualizar();
+function actualizar() {
+  clearInterval(intervalo);
+  segundos = 10;
+  select_id('countdown').innerHTML = segundos;
+  intervalo = setInterval(() => {
+    if (segundos == 0) {
+      segundos = 10;
+      escogerPreguntaAleatoria();
+    }
+    select_id('countdown').innerHTML = segundos;
+    segundos--;
+  }, 1000);
+}
 
 function escogerPreguntaAleatoria() {
+  if (juego_terminado) return;
+
+  actualizar(); // Reiniciar el temporizador al escoger una nueva pregunta
+
   let n;
   if (preguntas_aleatorias) {
     n = Math.floor(Math.random() * interprete_bp.length);
@@ -51,20 +62,21 @@ function escogerPreguntaAleatoria() {
     n = 0;
   }
   if (npreguntas.length == 10) {
-    //Aquí es donde el juego se reinicia
     if (mostrar_pantalla_juego_términado) {
       swal.fire({
         title: "Juego finalizado",
-        text:
-          "Puntuación: " + preguntas_correctas + "/" + (preguntas_hechas),
-        icon: "success"
+        text: "Puntuación: " + preguntas_correctas + "/" + (preguntas_hechas),
+        icon: "success",
+        confirmButtonText: 'Reiniciar',
+      }).then((result) => {
+        if (result.isConfirmed) {
+          iniciarJuego();
+        }
       });
     }
-    if (reiniciar_puntos_al_reiniciar_el_juego) {
-      preguntas_correctas = 0
-      preguntas_hechas = 0
-    }
-    npreguntas = [];
+    clearInterval(intervalo);
+    juego_terminado = true;
+    return;
   }
 
   npreguntas.push(n);
@@ -72,8 +84,6 @@ function escogerPreguntaAleatoria() {
   n++;
   escogerPregunta(n);
 }
-
-
 
 function escogerPregunta(n) {
   pregunta = interprete_bp[n];
@@ -120,9 +130,8 @@ function desordenarRespuestas(pregunta) {
 let suspender_botones = false;
 
 function oprimir_btn(i) {
-  if (suspender_botones) {
-    return;
-  }
+  if (suspender_botones || juego_terminado) return;
+
   suspender_botones = true;
   if (posibles_respuestas[i] == pregunta.respuesta) {
     preguntas_correctas++;
@@ -141,8 +150,6 @@ function oprimir_btn(i) {
     suspender_botones = false;
   }, 1000);
 }
-
-// let p = prompt("numero")
 
 function reiniciar() {
   for (const btn of btn_correspondiente) {
